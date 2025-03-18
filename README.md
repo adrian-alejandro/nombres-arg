@@ -1,2 +1,10 @@
-# nombres-arg
-Colección de nombres históricos de Argentina, basado en los siguientes datasets del repositorio de datos público Datos Argentina (datos.gob.ar): 1) Histórico de nombres, y 2) Personas por apellido por provincia.
+# nombres-arg: Nombres y Apellidos de Argentina
+
+Colección de nombres históricos de Argentina, basado en los siguientes datasets del repositorio de datos público [Datos Argentina](https://www.datos.gob.ar/):
+1) [Histórico de nombres](https://www.datos.gob.ar/dataset/otros-nombres-personas-fisicas/archivo/otros_2.1), perteneciente al recurso [Nombres de personas físicas](https://www.datos.gob.ar/dataset/otros-nombres-personas-fisicas). Fecha de última actualización: 27-Julio-2017
+
+2) [Personas por apellido por provincia](https://datos.gob.ar/dataset/renaper-distribucion-apellidos-argentina/archivo/renaper_2.3), perteneciente al recurso [Distribución de apellidos en Argentina](https://datos.gob.ar/dataset/renaper-distribucion-apellidos-argentina). Fecha de última actualización: 21-Agosto-2022.
+
+La finalidad de este repositorio de datos es disponibilizar sin repeticiones los nombres y apellidos de personas físicas en Argentina.
+
+Fecha de última actualización: 18-Marzo-2025.
