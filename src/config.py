@@ -1,0 +1,11 @@
+NAMES_DATA = "https://infra.datos.gob.ar/catalog/otros/dataset/2/distribution/2.1/download/historico-nombres.zip"
+LASTNAMES_DATA = "https://datosabiertos.renaper.gob.ar/apellidos_cantidad_personas_provincia.csv"
+NAMES_COLUMN = 'nombre'
+LASTNAMES_COLUMN = 'apellido'
+NAMES_EXPORT = 'data/processed/names.csv'
+LASTNAMES_EXPORT = 'data/processed/lastnames.csv'
+NAMES_RAW = 'data/raw/names.csv'
+LASTNAMES_RAW = 'data/raw/lastnames.csv'
+NAMES_INTER = 'data/intermediate/names.csv'
+LASTNAMES_INTER = 'data/intermediate/lastnames.csv'
+MAX_WORKERS = 6
