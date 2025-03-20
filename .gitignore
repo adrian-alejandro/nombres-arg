@@ -173,3 +173,10 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 .vscode/settings.json
+
+# Logs
+logs/*
+
+# Intermediate results & raw data (too heavy)
+data/intermediate/*
+data/raw/*
