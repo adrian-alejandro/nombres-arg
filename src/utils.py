@@ -2,7 +2,17 @@ import pandas as pd
 import re
 from io import StringIO
 import requests
+import functools
+from spacy.lang.es.stop_words import STOP_WORDS
 
+
+def suppress_pandas_warning(func):
+    """Decorator to temporarily suppress SettingWithCopyWarning in Pandas."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        with pd.option_context("mode.chained_assignment", None):
+            return func(*args, **kwargs)
+    return wrapper
 
 def unicode_normalization(series: pd.Series) -> pd.Series:
     return series.str.normalize('NFKD').str.replace(r'[\u0300-\u036F]', '', regex=True)
@@ -25,7 +35,8 @@ def pull_data_from_url(url: str, usecols=None) -> pd.DataFrame:
         data = pd.read_csv(data, usecols=usecols)
     return data
 
-def clean_column(data: pd.DataFrame, col_name: str, split: bool = False):
+@suppress_pandas_warning
+def clean_column(data: pd.DataFrame, col_name: str, split: bool = False) -> tuple:
     # Drop NAs
     data = data.dropna()
     # Keep original column
@@ -52,8 +63,8 @@ def clean_column(data: pd.DataFrame, col_name: str, split: bool = False):
         r'o0\b': 'o',
         r'(?<=[a-z])[03](?=[a-z]|$)': 'o', 
         r'0(?=[a-z])': 'o',
-        r'(?<=[a-z])1(?=[a-z]|$)': 'i',
-        r'(?<=[a-z])[389](?=[a-z]|$)': '',
+        r'(^|(?<=[a-z]))1(?=[a-z]|$)': 'i',
+        r'(?<=[a-z])[0-9](?=[a-z]|$)': '',
         r'(?<=[0-9])o$': '°'
     }
     context_replacements = {re.compile(k): v for k, v in context_replacements.items()}
@@ -61,14 +72,14 @@ def clean_column(data: pd.DataFrame, col_name: str, split: bool = False):
 
     # Direct replacement of special characters (including ¤, ?, £)
     direct_replacements = {
-        '¡': 'i', '\x82': 'e', '¢': 'o', 'ύ': 'u', 'υ': 'u', 'µ': 'a',
-        '¤': 'a',  '£': 'e', r'\?': 'e'
+        '¡': 'i', '\x82': 'e', '¢': 'o', 'ύ': 'u', 'υ': 'u', 'µ': 'a', 'μ': 'a',
+        '¤': 'a',  '£': 'e', r'\?': 'e', '2°': 'segundo'
     }
     direct_replacements = {re.compile(k): v for k, v in direct_replacements.items()}
     data[col_name] = data[col_name].apply(lambda x: replace_text(x, direct_replacements))
 
     # Remove other unwanted characters: .|_`: \xad { " \x90 \t ~
-    pattern = re.compile(r'[.|_`:/{·\+~\xad\x90\t¤"]')
+    pattern = re.compile(r'[.|_`:/{·+~\xad\x90\t¤"¿]')
     data[col_name] = data[col_name].str.replace(pattern, '',regex=True)
     
     # Remove commas from names (longer cases correspond to two names))
@@ -91,8 +102,15 @@ def clean_column(data: pd.DataFrame, col_name: str, split: bool = False):
                                     .str.strip("'")\
                                     .str.strip("-")
     
-    # Replace empty rows with NA and drop NAs
-    data[col_name] = data[col_name].apply(lambda x: None if x == '' else x, 1)
+    # Remove words that are entirely non-alphabetic or numbers
+    data[col_name] = data[col_name].str.replace(re.compile(r'^\W+$|^\d+$'), '', regex=True)
+
+    # Remove stopwords and uni-character
+    # It's not very thorough so it may need revision
+    filter_sw = lambda x: ~((x.str.len() < 2) | (x.str.len() == 2) & (x.isin(STOP_WORDS)))
+    data[col_name] = data[filter_sw(data[col_name])][col_name]
+
+    # Drop NAs
     data.dropna(inplace=True)
 
     # Return unique values and data
