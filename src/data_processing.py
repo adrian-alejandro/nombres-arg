@@ -59,9 +59,9 @@ class NameDataProcessor:
             self.lastnames_processed_data.to_csv(LASTNAMES_INTER, index=False)
         
         logger.info("Exporting processed data...")
-        
-        self.unique_names.to_csv(NAMES_EXPORT, index=False)
-        self.unique_lastnames.to_csv(LASTNAMES_EXPORT, index=False)
+        # The export is just a pandas Series, so no need for index or header
+        self.unique_names.to_csv(NAMES_EXPORT, index=False, header=None)
+        self.unique_lastnames.to_csv(LASTNAMES_EXPORT, index=False, header=None)
         
         logger.info("Data successfully exported.")
 
