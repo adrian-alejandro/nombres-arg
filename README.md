@@ -7,8 +7,9 @@ Colección de nombres históricos de Argentina, basado en los siguientes dataset
 
 La finalidad de este repositorio de datos es disponibilizar sin repeticiones los nombres y apellidos de personas físicas en Argentina.
 
-Fecha de última actualización: 21-Marzo-2025.
 
+
+-----
 PENDING TO DO:
 - Thorough check of names and cleaning rules
 - Fix execution issue, as currently the script runs with the following workaround: `PYTHONPATH=$(pwd) python scripts/preprocess_data.py`
