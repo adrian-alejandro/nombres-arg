@@ -58,10 +58,16 @@ jobs:
           git fetch --prune --unshallow
 
           DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
-          
+
           git checkout $DEFAULT_BRANCH
           git pull origin $DEFAULT_BRANCH
           git commit -am "Set version to $VERSION"
+          
+      - name: Push Version Update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git push origin $DEFAULT_BRANCH
 
       - name: Install Dependencies
