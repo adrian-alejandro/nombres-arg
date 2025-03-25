@@ -29,33 +29,6 @@ jobs:
       - name: Run Tests
         run: pytest tests/
 
-  bump-version:
-    name: Update Version in Files
-    needs: test  # Only runs if tests pass
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Install Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install bump2version
-
-      - name: Extract Version from Tag
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
-
-      - name: Update Version in Files
-        run: |
-          bump2version --new-version $VERSION --allow-dirty patch pyproject.toml setup.cfg setup.py
-
-      - name: Commit Updated Files
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git commit -am "Bump version to $VERSION"
-          git push
-
   deploy:
     name: Deploy to PyPI
     needs: test  # Only runs if tests pass
@@ -68,7 +41,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.12"
+
+      - name: Extract Version from Tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Inject Version into Files
+        run: |
+          sed -i "s/version = .*/version = \"$VERSION\"/" pyproject.toml
+          sed -i "s/version = .*/version = $VERSION/" setup.cfg
+          sed -i "s/version=.*/version=\"$VERSION\",/" setup.py
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git commit -am "Set version to $VERSION"
+          git push
 
       - name: Install Dependencies
         run: |
