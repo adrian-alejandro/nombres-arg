@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nombres-arg"
+version = "0.2.0"
+description = "A package for accessing names and last names from Argentina."
+authors = [{ name = "Adrián Zelaya", email = "zelaya.adrian@gmail.com" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "pandas",
+    "requests",
+    "spacy"
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
