@@ -20,10 +20,31 @@ The purpose of this data repository is to make the first and last names of indiv
 
 ## Installation
 
+There are multiple alternatives for installing this package.
+
+### Install from PyPI (Recommended)
 **nombres-arg** is available on [PyPI](https://pypi.org/project/nombres-arg). It can be installed via pip as follows:
 
 ```bash
 pip install nombres-arg
+```
+
+### Install from GitHub (Latest Version)
+```bash
+pip install git+https://github.com/adrian-alejandro/nombres-arg.git
+```
+
+### Install locally from Source
+```bash
+git clone https://github.com/adrian-alejandro/nombres-arg.git
+cd nombres-arg
+pip install .
+```
+
+### Install in editable mode (for development)
+In case you would like to modify the package:
+```bash
+pip install -e .
 ```
 
 ## Usage
