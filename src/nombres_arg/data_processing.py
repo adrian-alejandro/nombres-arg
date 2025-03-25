@@ -1,9 +1,9 @@
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
-from src.utils import pull_data_from_url, clean_column
-from src.config import (NAMES_DATA, LASTNAMES_DATA, NAMES_COLUMN, LASTNAMES_COLUMN,
+from .utils import pull_data_from_url, clean_column
+from .config import (NAMES_DATA, LASTNAMES_DATA, NAMES_COLUMN, LASTNAMES_COLUMN,
                         NAMES_EXPORT, LASTNAMES_EXPORT, MAX_WORKERS, NAMES_RAW, 
                         LASTNAMES_RAW, NAMES_INTER, LASTNAMES_INTER)
-from src.logging_config import logger
+from .logging_config import logger
 import pandas as pd
 
 class NameDataProcessor:

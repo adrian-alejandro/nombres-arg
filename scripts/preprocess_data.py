@@ -1,4 +1,4 @@
-from src.data_processing import NameDataProcessor
+from src.nombres_arg.data_processing import NameDataProcessor
 
 def main():
     processor = NameDataProcessor()
