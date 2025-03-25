@@ -51,9 +51,14 @@ jobs:
           sed -i "s/version = .*/version = \"$VERSION\"/" pyproject.toml
           sed -i "s/version = .*/version = $VERSION/" setup.cfg
           sed -i "s/version=.*/version=\"$VERSION\",/" setup.py
+
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+
+          git fetch --prune --unshallow
+
           DEFAULT_BRANCH=$(git remote show origin | awk '/HEAD branch/ {print $NF}')
+          
           git checkout $DEFAULT_BRANCH
           git pull origin $DEFAULT_BRANCH
           git commit -am "Set version to $VERSION"
