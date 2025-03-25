@@ -53,8 +53,10 @@ jobs:
           sed -i "s/version=.*/version=\"$VERSION\",/" setup.py
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+          git checkout main
+          git pull origin main
           git commit -am "Set version to $VERSION"
-          git push
+          git push origin main
 
       - name: Install Dependencies
         run: |
