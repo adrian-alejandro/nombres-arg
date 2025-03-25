@@ -79,7 +79,7 @@ def clean_column(data: pd.DataFrame, col_name: str, split: bool = False) -> tupl
     data[col_name] = data[col_name].apply(lambda x: replace_text(x, direct_replacements))
 
     # Remove other unwanted characters: .|_`: \xad { " \x90 \t ~
-    pattern = re.compile(r'[.|_`:/{·+~\xad\x90\t¤"¿]')
+    pattern = re.compile(r'[.|_`:/{·+~\xad\x90\t¤"¿!]')
     data[col_name] = data[col_name].str.replace(pattern, '',regex=True)
     
     # Remove commas from names (longer cases correspond to two names))
