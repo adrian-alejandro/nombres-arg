@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="nombres-arg",
-    version="0.4.7",
+    version="0.4.9",
     description="A package for accessing names and last names from Argentina.",
     author="Adrián Zelaya",
     author_email="zelaya.adrian@gmail.com",
