@@ -84,3 +84,19 @@ jobs:
           TWINE_USERNAME: "__token__"
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: python -m twine upload dist/*
+
+      - name: Notify GitHub of Deployment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X POST https://api.github.com/repos/${{ github.repository }}/deployments \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${GITHUB_TOKEN}" \
+          -d '{
+            "ref": "'"${GITHUB_REF}"'",
+            "auto_merge": false,
+            "required_contexts": [],
+            "environment": "PyPI",
+            "description": "Deployed version '${{ env.VERSION }}' to PyPI",
+            "transient_environment": false
+          }'
